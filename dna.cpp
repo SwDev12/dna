@@ -44,14 +44,21 @@ void solve(unsigned *uniq_len, unsigned *uniq_num)
 {
     (void)uniq_len;
     (void)uniq_num;
-    unsigned start;
+//    unsigned start = 0;
     unsigned end;
 
     curr = word_arr;
 
-    for (unsigned length = 1; length <= len; len++) {
-        for (start = 0; start < len; start++) {
-
+    for (unsigned length = 0; length < len; length++) {
+//        printf("length = %u\n", length);
+        end = len - length;
+//        printf("length = %u, endee = %u\n", length, end);
+        for (unsigned start = 0; start < end; start++) {
+//            printf("start = %u, endee = %u\n", start, end);
+            for (unsigned i = start; i <= start + length; i++) {
+                printf("%c", input[i]);
+            }
+            printf("\n");
         }
     }
 }
@@ -59,6 +66,7 @@ void solve(unsigned *uniq_len, unsigned *uniq_num)
 int main(void)
 {
     unsigned cases;
+    unsigned uniq_len, uniq_num;
 
     scanf("%d", &cases);
     cases++;
@@ -68,7 +76,8 @@ int main(void)
     for (unsigned c = 1; c < cases; c++) {
         scanf("%s", input);
         len = strlen(input);
-        printf("len = %u\n", len);
+//        printf("len = %u\n", len);
+        solve(&uniq_len, &uniq_num);
     }
 
     return 0;
