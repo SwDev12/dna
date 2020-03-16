@@ -6,6 +6,7 @@
 
 char input[MAX_LENGTH];
 unsigned len;
+unsigned uniq_len, uniq_num;
 
 struct word {
     struct word *a;
@@ -16,8 +17,10 @@ struct word {
     unsigned cnt;
 };
 
-struct word word_arr[CAPACITY];
+struct word word_arr[MAX_LENGTH * MAX_LENGTH / 2];
 static struct word *curr;
+static struct word root;
+static struct word *word_it;
 
 struct word *alloc(void)
 {
@@ -40,25 +43,98 @@ unsigned strlen(char *str)
     return length;
 }
 
-void solve(unsigned *uniq_len, unsigned *uniq_num)
+void solve(void)
 {
-    (void)uniq_len;
-    (void)uniq_num;
 //    unsigned start = 0;
-    unsigned end;
+    unsigned limit;
+    unsigned nodes;
+    unsigned last_uniq_capacity;
 
     curr = word_arr;
+    root.a = 0;
+    root.c = 0;
+    root.g = 0;
+    root.t = 0;
 
     for (unsigned length = 0; length < len; length++) {
 //        printf("length = %u\n", length);
-        end = len - length;
+        limit = len - length;
 //        printf("length = %u, endee = %u\n", length, end);
-        for (unsigned start = 0; start < end; start++) {
+        nodes = 0;
+        last_uniq_capacity = 0;
+        for (unsigned start = 0; start < limit; start++) {
 //            printf("start = %u, endee = %u\n", start, end);
+            word_it = &root;
             for (unsigned i = start; i <= start + length; i++) {
-                printf("%c", input[i]);
+                switch (input[i]) {
+                case 'a':
+                    if (word_it->a == 0) {
+                        word_it->a = alloc();
+                        word_it = word_it->a;
+                        word_it->cnt = 1;
+                        nodes++;
+                    } else {
+                        word_it = word_it->a;
+                        if (word_it->cnt == 1) {
+                            last_uniq_capacity++;
+                        }
+                        word_it->cnt++;
+                    }
+                    break;
+                case 'c':
+                    if (word_it->c == 0) {
+                        word_it->c = alloc();
+                        word_it = word_it->c;
+                        word_it->cnt = 1;
+                        nodes++;
+                    } else {
+                        word_it = word_it->c;
+                        if (word_it->cnt == 1) {
+                            last_uniq_capacity++;
+                        }
+                        word_it->cnt++;
+                    }
+                    break;
+                case 'g':
+                    if (word_it->g == 0) {
+                        word_it->g = alloc();
+                        word_it = word_it->g;
+                        word_it->cnt = 1;
+                        nodes++;
+                    } else {
+                        word_it = word_it->g;
+                        if (word_it->cnt == 1) {
+                            last_uniq_capacity++;
+                        }
+                        word_it->cnt++;
+                    }
+                    break;
+                case 't':
+                    if (word_it->t == 0) {
+                        word_it->t = alloc();
+                        word_it = word_it->t;
+                        word_it->cnt = 1;
+                        nodes++;
+                    } else {
+                        word_it = word_it->t;
+                        if (word_it->cnt == 1) {
+                            last_uniq_capacity++;
+                        }
+                        word_it->cnt++;
+                    }
+                    break;
+                }
+                //printf("%c", input[i]);
             }
-            printf("\n");
+//n            printf("\n");
+        }
+//        printf("nodes = %u, last_uniq_capacity = %u\n", nodes, last_uniq_capacity);
+        if (nodes > last_uniq_capacity) {
+//            printf("Looks like is answer\n");
+            uniq_len = length + 1;
+            uniq_num = nodes - last_uniq_capacity;
+//            printf("uniq_len = %u, uniq_num = %u\n", uniq_len, uniq_num);
+            break;
         }
     }
 }
@@ -66,18 +142,18 @@ void solve(unsigned *uniq_len, unsigned *uniq_num)
 int main(void)
 {
     unsigned cases;
-    unsigned uniq_len, uniq_num;
 
     scanf("%d", &cases);
     cases++;
-    printf("cases = %d\n", cases);
+    //printf("cases = %d\n", cases);
 
-    printf("sizeof(struct word) = %zu\n", sizeof(struct word));
+//    printf("sizeof(struct word) = %zu\n", sizeof(struct word));
     for (unsigned c = 1; c < cases; c++) {
         scanf("%s", input);
         len = strlen(input);
 //        printf("len = %u\n", len);
-        solve(&uniq_len, &uniq_num);
+        solve();
+        printf("#%u %u %u\n", c, uniq_len, uniq_num);
     }
 
     return 0;
