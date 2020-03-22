@@ -13,7 +13,6 @@ struct word {
     struct word *c;
     struct word *g;
     struct word *t;
-    unsigned len;
     unsigned cnt;
 };
 
@@ -24,13 +23,8 @@ static struct word *word_it;
 
 struct word *alloc(void)
 {
-    curr->a = 0;
-    curr->c = 0;
-    curr->g = 0;
-    curr->t = 0;
-    curr->len = 0;
+    curr->a = curr->c = curr->g = curr->t = 0;
     curr->cnt = 0;
-
     return curr++;
 }
 
@@ -45,7 +39,6 @@ unsigned strlen(char *str)
 
 void solve(void)
 {
-//    unsigned start = 0;
     unsigned limit;
     unsigned nodes;
     unsigned last_uniq_capacity;
