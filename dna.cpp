@@ -143,7 +143,7 @@ void solve(void)
             uniq_len = length + 1;
             uniq_num = nodes - last_uniq_capacity;
 //          printf("uniq_len = %u, uniq_num = %u\n", uniq_len, uniq_num);
-            break;
+            return;
         } else if (length == 0) {
 //            printf("We are here, root.a = %p, cnt = %u\n", root.a, root.a->cnt);
             uniq_num = length + 1;
