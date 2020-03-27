@@ -19,7 +19,7 @@ struct word {
 struct word word_arr[MAX_LENGTH * MAX_LENGTH / 2];
 static struct word *curr;
 static struct word root;
-static struct word *word_it;
+//static struct word *word_it;
 
 struct word *alloc(void)
 {
@@ -42,12 +42,11 @@ void solve(void)
     unsigned limit;
     unsigned nodes;
     unsigned last_uniq_capacity;
+    unsigned end;
+    register struct word *word_it;
 
     curr = word_arr;
-    root.a = 0;
-    root.c = 0;
-    root.g = 0;
-    root.t = 0;
+    root.a = root.c = root.g = root.t = 0;
 
     for (unsigned length = 0; length < len; length++) {
 //        printf("length = %u\n", length);
@@ -58,76 +57,109 @@ void solve(void)
         for (unsigned start = 0; start < limit; start++) {
 //            printf("start = %u, endee = %u\n", start, end);
             word_it = &root;
-            for (unsigned i = start; i <= start + length; i++) {
+            end = start + length;
+            register unsigned i;
+            for (i = start; i < end; i++) {
                 switch (input[i]) {
                 case 'a':
-                    if (word_it->a == 0) {
-                        word_it->a = alloc();
-                        word_it = word_it->a;
-                        word_it->cnt = 1;
-                        nodes++;
-                    } else {
-                        word_it = word_it->a;
-                        if (word_it->cnt == 1) {
-                            last_uniq_capacity++;
-                        }
-                        word_it->cnt++;
-                    }
+                    word_it = word_it->a;
                     break;
                 case 'c':
-                    if (word_it->c == 0) {
-                        word_it->c = alloc();
-                        word_it = word_it->c;
-                        word_it->cnt = 1;
-                        nodes++;
-                    } else {
-                        word_it = word_it->c;
-                        if (word_it->cnt == 1) {
-                            last_uniq_capacity++;
-                        }
-                        word_it->cnt++;
-                    }
+                    word_it = word_it->c;
                     break;
                 case 'g':
-                    if (word_it->g == 0) {
-                        word_it->g = alloc();
-                        word_it = word_it->g;
-                        word_it->cnt = 1;
-                        nodes++;
-                    } else {
-                        word_it = word_it->g;
-                        if (word_it->cnt == 1) {
-                            last_uniq_capacity++;
-                        }
-                        word_it->cnt++;
-                    }
+                    word_it = word_it->g;
                     break;
                 case 't':
-                    if (word_it->t == 0) {
-                        word_it->t = alloc();
-                        word_it = word_it->t;
-                        word_it->cnt = 1;
-                        nodes++;
-                    } else {
-                        word_it = word_it->t;
-                        if (word_it->cnt == 1) {
-                            last_uniq_capacity++;
-                        }
-                        word_it->cnt++;
-                    }
+                    word_it = word_it->t;
                     break;
                 }
-                //printf("%c", input[i]);
+
             }
-//n            printf("\n");
+            switch (input[i]) {
+            case 'a':
+                if (word_it->a == 0) {
+                    word_it->a = alloc();
+                    word_it = word_it->a;
+                    word_it->cnt = 1;
+                    nodes++;
+                } else {
+                    word_it = word_it->a;
+                    if (word_it->cnt == 1) {
+                        last_uniq_capacity++;
+                    }
+                    word_it->cnt++;
+                }
+                break;
+            case 'c':
+                if (word_it->c == 0) {
+                    word_it->c = alloc();
+                    word_it = word_it->c;
+                    word_it->cnt = 1;
+                    nodes++;
+                } else {
+                    word_it = word_it->c;
+                    if (word_it->cnt == 1) {
+                        last_uniq_capacity++;
+                    }
+                    word_it->cnt++;
+                }
+                break;
+            case 'g':
+                if (word_it->g == 0) {
+                    word_it->g = alloc();
+                    word_it = word_it->g;
+                    word_it->cnt = 1;
+                    nodes++;
+                } else {
+                    word_it = word_it->g;
+                    if (word_it->cnt == 1) {
+                        last_uniq_capacity++;
+                    }
+                    word_it->cnt++;
+                }
+                break;
+            case 't':
+                if (word_it->t == 0) {
+                    word_it->t = alloc();
+                    word_it = word_it->t;
+                    word_it->cnt = 1;
+                    nodes++;
+                } else {
+                    word_it = word_it->t;
+                    if (word_it->cnt == 1) {
+                        last_uniq_capacity++;
+                    }
+                    word_it->cnt++;
+                }
+                break;
+            }
+            //printf("%c", input[i]);
+//          printf("\n");
         }
 //        printf("nodes = %u, last_uniq_capacity = %u\n", nodes, last_uniq_capacity);
         if (nodes > last_uniq_capacity) {
 //            printf("Looks like is answer\n");
             uniq_len = length + 1;
             uniq_num = nodes - last_uniq_capacity;
-//            printf("uniq_len = %u, uniq_num = %u\n", uniq_len, uniq_num);
+//          printf("uniq_len = %u, uniq_num = %u\n", uniq_len, uniq_num);
             break;
+        } else if (length == 0) {
+//            printf("We are here, root.a = %p, cnt = %u\n", root.a, root.a->cnt);
+            uniq_num = length + 1;
+            if (root.a && root.a->cnt == len) {
+                uniq_len = root.a->cnt;
+                break;
+            } else if (root.c && root.c->cnt == len) {
+                uniq_len = root.c->cnt;
+                break;
+            } else if (root.g && root.g->cnt == len) {
+                uniq_len = root.g->cnt;
+                break;
+            } else if (root.t && root.t->cnt == len) {
+                uniq_len = root.t->cnt;
+                break;
+            }
         }
     }
 }
