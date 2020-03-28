@@ -19,12 +19,14 @@ struct word {
 struct word word_arr[MAX_LENGTH * MAX_LENGTH / 2];
 static struct word *curr;
 static struct word root;
-//static struct word *word_it;
+static struct word *word_it;
+static struct word *last;
 
 struct word *alloc(void)
 {
     curr->a = curr->c = curr->g = curr->t = 0;
     curr->cnt = 0;
+    last = curr;
     return curr++;
 }
 
@@ -38,6 +40,38 @@ unsigned strlen(char *str)
 }
 
 void solve(void)
+{
+    curr = word_arr;
+    root.a = root.c = root.g = root.t = 0;
+    for (unsigned i = 0; i < len; i++) {
+        word_it = &root;
+        for (unsigned k = i; k < len; k++) {
+            switch (input[k]) {
+                case 'a':
+                    if (word_it->a == 0) {
+                        word_it->a = alloc();
+                    }
+                    word_it = word_it->a;
+                    word_it->cnt++;
+                    break;
+                case 'c':
+                    if (word_it->c == 0) {
+                        word_it->c = alloc();
+                    }
+                    word_it = word_it->c;
+                    word_it->cnt++;
+                    break;
+           }
+        }
+    }
+    printf("root = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", &root, root.a, root.c, root.g, root.t, root.cnt);
+
+    for (word_it = word_arr; word_it <= last; word_it++) {
+        printf("word_it = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", word_it, word_it->a, word_it->c, word_it->g, word_it->t, word_it->cnt);
+    }
+}
+
+/*void solve1(void)
 {
     unsigned limit;
     unsigned nodes;
@@ -162,7 +196,7 @@ void solve(void)
             }
         }
     }
-}
+}*/
 
 int main(void)
 {
