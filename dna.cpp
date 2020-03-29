@@ -1,5 +1,4 @@
 #include <stdio.h>
-//#include <string.h>
 
 #define MAX_LENGTH 3001
 #define CAPACITY 20000
@@ -20,7 +19,6 @@ struct word {
 struct word word_arr[MAX_LENGTH * MAX_LENGTH / 2];
 static struct word *curr;
 static struct word root;
-//static struct word *word_it;
 static struct word *last;
 
 struct word *alloc(void)
@@ -92,14 +90,6 @@ void solve(void)
     for (x = 1; uniq[x] == 0; x++);
     uniq_len = x;
     uniq_num = uniq[x];
-/*    printf("root = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", &root, root.a, root.c, root.g, root.t, root.cnt);
-
-    for (word_it = word_arr; word_it <= last; word_it++) {
-        printf("word_it = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", word_it, word_it->a, word_it->c, word_it->g, word_it->t, word_it->cnt);
-    }*/
-/*    for (unsigned c = 0; c < 12; c++) {
-        printf("uniq[%u] = %u\n", c, uniq[c]);
-    }*/
     for (x = uniq_len; x < MAX_LENGTH; x++) {
         uniq[x] = 0;
     }
