@@ -20,7 +20,7 @@ struct word {
 struct word word_arr[MAX_LENGTH * MAX_LENGTH / 2];
 static struct word *curr;
 static struct word root;
-static struct word *word_it;
+//static struct word *word_it;
 static struct word *last;
 
 struct word *alloc(void)
@@ -42,7 +42,9 @@ unsigned strlen(char *str)
 
 void solve(void)
 {
+    register struct word *word_it;
     unsigned l;
+    register unsigned x;
     curr = word_arr;
     root.a = root.c = root.g = root.t = 0;
     for (unsigned i = 0; i < len; i++) {
@@ -57,7 +59,6 @@ void solve(void)
                         uniq[l]++;
                     }
                     word_it = word_it->a;
-                    word_it->cnt++;
                     break;
                 case 'c':
                     if (word_it->c == 0) {
@@ -65,7 +66,6 @@ void solve(void)
                         uniq[l]++;
                     }
                     word_it = word_it->c;
-                    word_it->cnt++;
                     break;
                 case 'g':
                     if (word_it->g == 0) {
@@ -73,7 +73,6 @@ void solve(void)
                         uniq[l]++;
                     }
                     word_it = word_it->g;
-                    word_it->cnt++;
                     break;
                 case 't':
                     if (word_it->t == 0) {
@@ -81,16 +80,15 @@ void solve(void)
                         uniq[l]++;
                     }
                     word_it = word_it->t;
-                    word_it->cnt++;
                     break;
 
             }
+            word_it->cnt++;
             if (word_it->cnt == 2) {
                 uniq[l]--;
             }
         }
     }
-    unsigned x;
     for (x = 1; uniq[x] == 0; x++);
     uniq_len = x;
     uniq_num = uniq[x];
@@ -102,7 +100,7 @@ void solve(void)
 /*    for (unsigned c = 0; c < 12; c++) {
         printf("uniq[%u] = %u\n", c, uniq[c]);
     }*/
-    for (x = 1; x < MAX_LENGTH; x++) {
+    for (x = uniq_len; x < MAX_LENGTH; x++) {
         uniq[x] = 0;
     }
 }
