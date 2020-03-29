@@ -5,6 +5,7 @@
 #define CAPACITY 20000
 
 char input[MAX_LENGTH];
+unsigned uniq[MAX_LENGTH];
 unsigned len;
 unsigned uniq_len, uniq_num;
 
@@ -41,15 +42,19 @@ unsigned strlen(char *str)
 
 void solve(void)
 {
+    unsigned l;
     curr = word_arr;
     root.a = root.c = root.g = root.t = 0;
     for (unsigned i = 0; i < len; i++) {
         word_it = &root;
+        l = 0;
         for (unsigned k = i; k < len; k++) {
+            l++;
             switch (input[k]) {
                 case 'a':
                     if (word_it->a == 0) {
                         word_it->a = alloc();
+                        uniq[l]++;
                     }
                     word_it = word_it->a;
                     word_it->cnt++;
@@ -57,17 +62,48 @@ void solve(void)
                 case 'c':
                     if (word_it->c == 0) {
                         word_it->c = alloc();
+                        uniq[l]++;
                     }
                     word_it = word_it->c;
                     word_it->cnt++;
                     break;
-           }
+                case 'g':
+                    if (word_it->g == 0) {
+                        word_it->g = alloc();
+                        uniq[l]++;
+                    }
+                    word_it = word_it->g;
+                    word_it->cnt++;
+                    break;
+                case 't':
+                    if (word_it->t == 0) {
+                        word_it->t = alloc();
+                        uniq[l]++;
+                    }
+                    word_it = word_it->t;
+                    word_it->cnt++;
+                    break;
+
+            }
+            if (word_it->cnt == 2) {
+                uniq[l]--;
+            }
         }
     }
-    printf("root = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", &root, root.a, root.c, root.g, root.t, root.cnt);
+    unsigned x;
+    for (x = 1; uniq[x] == 0; x++);
+    uniq_len = x;
+    uniq_num = uniq[x];
+/*    printf("root = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", &root, root.a, root.c, root.g, root.t, root.cnt);
 
     for (word_it = word_arr; word_it <= last; word_it++) {
         printf("word_it = %p, a = %p, c = %p, g = %p, t = %p, cnt = %u\n", word_it, word_it->a, word_it->c, word_it->g, word_it->t, word_it->cnt);
+    }*/
+/*    for (unsigned c = 0; c < 12; c++) {
+        printf("uniq[%u] = %u\n", c, uniq[c]);
+    }*/
+    for (x = 1; x < MAX_LENGTH; x++) {
+        uniq[x] = 0;
     }
 }
 
