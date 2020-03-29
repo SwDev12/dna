@@ -50,7 +50,7 @@ void solve(void)
     for (unsigned i = 0; i < len; i++) {
         word_it = &root;
         l = 0;
-        for (unsigned k = i; k < len; k++) {
+        for (register unsigned k = i; k < len; k++) {
             l++;
             switch (input[k]) {
                 case 'a':
